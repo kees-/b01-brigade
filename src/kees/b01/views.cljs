@@ -90,6 +90,7 @@
 
 (defn recipe-section
   []
+  #_{:clj-kondo/ignore [:redundant-let]}
   (let []
     (fn [{:keys [sid ingredients procedures]}]
       (when-not (seq procedures)
