@@ -21,7 +21,7 @@ main {
   margin: 2rem;
 }
 
-h1 {
+h1, h2 {
   margin: 1rem auto .25rem 2rem;
 }
 
@@ -44,6 +44,9 @@ table td {
 }
 .bor {
   border: 1px solid cornsilk;
-  padding: .25rem .5rem;
-  margin: .5rem .5rem;
+  padding: .5rem;
+  margin: .5rem;
+}
+.struck {
+  text-decoration: line-through;
 }

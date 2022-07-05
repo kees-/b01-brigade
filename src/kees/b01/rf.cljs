@@ -1,5 +1,5 @@
 (ns kees.b01.rf
-  (:require [re-frame.core :as re-frame :refer [reg-event-db reg-sub]]))
+  (:require [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx reg-sub reg-fx]]))
 
 ;; ========== SETUP ============================================================
 (def <sub (comp deref re-frame/subscribe))
@@ -78,7 +78,13 @@
      (assoc-in
       db
       [:active-recipe :sections sid :ingredients iid]
-      {:iid iid :name nil :quantity nil :unit :g :other nil :scaling :auto}))))
+      {:iid iid
+       :name nil
+       :quantity nil
+       :unit "g"
+       :other nil
+       :scaling :auto
+       :scalar? false}))))
 
 (reg-event-db
  ::edit-ingredient
@@ -93,12 +99,26 @@
  (fn [db [_ sid iid]]
    (update-in db [:active-recipe :sections sid :ingredients] dissoc iid)))
 
-;; ========== SUBSCRIPTIONS ====================================================
-(reg-sub
- ::recipe
- (fn [db]
-   (:active-recipe db)))
+(reg-event-db
+ ::set-as-scalar
+ (fn [db [_ sid iid]]
+   (-> db
+       (update-in
+        [:active-recipe :sections]
+        (fn [sections]
+          (update-vals
+           sections
+           (fn [section]
+             (update
+              section
+              :ingredients
+              (fn [ingredients]
+                (update-vals
+                 ingredients
+                 (fn [ingredient] (assoc ingredient :scalar? false)))))))))
+       (assoc-in [:active-recipe :sections sid :ingredients iid :scalar?] true))))
 
+;; ========== SUBSCRIPTIONS ====================================================
 (reg-sub
  ::recipe-metadata
  (fn [db]
@@ -115,22 +135,57 @@
    (get-in db [:active-recipe :sections sid :procedures pid :value])))
 
 (reg-sub
- ::final-procedure-value
- (fn [db [_ sid]]
-   (-> db
-       (get-in [:active-recipe :sections sid :procedures])
-       last
-       last
-       :value)))
-
-(reg-sub
  ::ingredient-values
  (fn [db [_ sid iid]]
    (get-in db [:active-recipe :sections sid :ingredients iid])))
 
-#_(reg-sub
+(reg-sub
+ ::is-scalar?
+ (fn [db [_ sid iid]]
+   (get-in db [:active-recipe :sections sid :ingredients iid :scalar?])))
+
+;; ========== DATA OUTPUT ======================================================
+(reg-sub
  ::form->data
- :<- [::recipe]
  (fn [db _]
-   (let [recipe (:active-recipe db)]
-     nil)))
+   #_{:clj-kondo/ignore [:redundant-let]}
+   (let []
+     (-> db
+         (update-in
+          [:active-recipe :sections]
+          (fn [sections]
+            (update-vals
+             sections
+             (fn [section]
+               (-> section
+                   (update
+                    :ingredients
+                    (fn [ingredients]
+                      (update-vals
+                       ingredients
+                       (fn [ingredient]
+                         (-> ingredient
+                             (assoc
+                              :quantity-string
+                              (str (:quantity ingredient)
+                                   (case (:unit ingredient)
+                                     :none nil
+                                     :other (:other ingredient)
+                                     (name (:unit ingredient)))))
+                             (assoc
+                              :scaling-string
+                              (if (:scalar? ingredient)
+                                "100%"
+                                (case (:scaling ingredient)
+                                  :auto "x%"
+                                  :override "custom%"
+                                  "")))
+                             (dissoc :iid :scalar? :scaling :quantity :unit :other))))))
+                   (update
+                    :procedures
+                    (fn [procedures]
+                      (update-vals
+                       procedures
+                       (fn [procedure]
+                         (:value procedure)))))
+                   (dissoc :sid))))))))))
