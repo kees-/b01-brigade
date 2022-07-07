@@ -146,10 +146,10 @@
  ::form->data
  (fn [db _]
    #_{:clj-kondo/ignore [:redundant-let]}
-   (let []
-     (-> db
-         (update-in
-          [:active-recipe :sections]
+   (let [data (:active-recipe db)]
+     (-> data
+         (update
+          :sections
           (fn [sections]
             (update-vals
              sections
