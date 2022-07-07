@@ -45,6 +45,7 @@
       {:type "text"
        :placeholder "Quantity"
        :default-value quantity
+       :disabled (<sub [::rf/ingredient-unit-none? sid iid])
        :on-blur #(>evt [::rf/edit-ingredient sid iid :quantity (-> % .-target .-value)])
        :on-key-down #(case (.-keyCode %)
                        nil)}]
@@ -146,6 +147,48 @@
      [:hr]
      [recipe-foot]]))
 
+(defn text-out
+  []
+  (let [value (<sub [::rf/text-output])]
+    [:<>
+     [:h3 "Intermediate data output formatted for secondary processing"]
+     [:textarea.bor.textbox
+      {:rows 6
+       :cols 100
+       :style {:max-width "85%"}
+       :read-only true
+       :value value}]]))
+
+(defn console
+  []
+  (let [log (<sub [::rf/console])]
+    [:<>
+     [:h3 "Console"]
+     [:textarea.bor.textbox.console
+      {:rows 6
+       :cols 100
+       :style {:max-width "85%"}
+       :read-only true
+       :value log}]
+     [:p.left.fit
+      [:button
+       {:on-click #(>evt [::rf/clear-console])}
+       "Clear console"]]]))
+
+(defn text-out-button
+  []
+  (let [value (<sub-lazy [::rf/form->data])]
+    [:button
+     {:on-click #(>evt [::rf/send-to-text-output (-> @value pprint with-out-str)])}
+     "Form->text"]))
+
+(defn pdf-button
+  []
+  (let [data (<sub [::rf/form->data])]
+    [:button
+     {:on-click #(>evt [::rf/recipe->pdf data])}
+     "Download PDF"]))
+
 (defn todo
   []
   [:<>
@@ -171,12 +214,10 @@
      [:main
       [active-recipe]
       [:div
-       [:button
-        {:on-click #(-> (<sub [::rf/form->data]) pprint)}
-        "Form->data"]
-       [:button
-        {:on-click #(js/console.log "Placeholder for downloading PDF")}
-        "Download PDF"]]]
+       [text-out-button]
+       [pdf-button]]]
      [:footer
       [:hr]
+      [text-out]
+      [console]
       [todo]]]))

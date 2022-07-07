@@ -10,7 +10,10 @@
 (def >evt-now re-frame/dispatch-sync)
 
 (def default-db
-  {:active-recipe
+  {:ui
+   {:text-output ""
+    :console (vector)}
+   :active-recipe
    {:meta {:title ""
            :servings ""
            :source ""}
@@ -24,6 +27,15 @@
   Returns one more than the current largest id."
   [todos]
   ((fnil inc 0) (last (keys todos))))
+
+(reg-fx
+ :save
+ (fn [] (output/save)))
+
+(reg-fx
+ :render-output
+ (fn [[id data]]
+   (output/render-to-output id data)))
 
 ;; ========== EVENTS ===========================================================
 (reg-event-db
@@ -115,7 +127,38 @@
               (fn [ingredient] (assoc ingredient :scalar? false)))))))
        (assoc-in [sid :ingredients iid :scalar?] true))))
 
+(reg-event-db
+ ::send-to-text-output
+ (path [:ui])
+ (fn [ui [_ value]]
+   (assoc ui :text-output (str value))))
+
+(reg-event-db
+ ::log
+ (path [:ui])
+ (fn [console [_ message]]
+   (let [message (str "> [" (output/now) "] " message)]
+     (update console :console conj message))))
+
+(reg-event-db
+ ::clear-console
+ (path [:ui])
+ (fn [ui _]
+   (assoc ui :console (vector))))
+
+(reg-event-fx
+ ::recipe->pdf
+ (fn [_ [_ data]]
+   {:fx [[:render-output ["output" data]]
+         [:save nil]
+         [:dispatch [::log "Rendering for saving or printing"]]]}))
+
 ;; ========== SUBSCRIPTIONS ====================================================
+(reg-sub
+ ::blank
+ (fn [_ _]
+   "Does nothing"))
+
 (reg-sub
  ::recipe-metadata
  (fn [db]
@@ -140,6 +183,23 @@
  ::is-scalar?
  (fn [db [_ sid iid]]
    (get-in db [:active-recipe :sections sid :ingredients iid :scalar?])))
+
+(reg-sub
+ ::text-output
+ (fn [db _]
+   (-> db :ui :text-output)))
+
+(reg-sub
+ ::ingredient-unit-none?
+ (fn [db [_ sid iid]]
+   (= "none"
+      (get-in db [:active-recipe :sections sid :ingredients iid :unit]))))
+
+(reg-sub
+ ::console
+ (fn [{{:keys [console]} :ui} _]
+   (->> console
+        (s/join \newline))))
 
 ;; ========== DATA OUTPUT ======================================================
 (reg-sub

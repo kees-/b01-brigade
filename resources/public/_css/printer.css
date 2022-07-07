@@ -1,0 +1,62 @@
+#flex-root * {
+  border: 1px solid red;
+  font-family: sans-serif;
+}
+
+hr {
+  flex-grow: 1;
+  border: 1px solid black !important;
+  margin: .5rem;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+div {
+  display: flex;
+}
+
+/* ========== TOP-LEVEL ===================================================== */
+#output {
+  flex-direction: column;
+  align-items: center;
+}
+#flex-root {
+  width: 90%;
+  flex-direction: column;
+}
+
+/* ========== 2nd LEVEL ===================================================== */
+#recipe-header {
+  flex-grow: 1;
+  justify-content: space-between;
+}
+#recipe-body {
+  width: 100%;
+  flex-grow: 1;
+  align-self: center;
+  flex-direction: column;
+}
+#col-labels {
+  width: 100%;
+  align-items: stretch;
+}
+
+/* ========== 3rd LEVEL ===================================================== */
+#header-ing {
+  flex-grow: 1;
+}
+#header-qua {
+  flex-grow: 1;
+}
+#header-sca {
+  flex-grow: 1;
+}
+#header-art {
+  flex-grow: 7;
+}
+
+#sections {
+  flex-direction: column;
+}
