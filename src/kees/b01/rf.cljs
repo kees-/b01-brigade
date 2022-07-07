@@ -33,53 +33,52 @@
 
 (reg-event-db
  ::recipe-metadata
- (fn [db [_ metadata value]]
-   (assoc-in db [:active-recipe :meta metadata] value)))
+ (path [:active-recipe :meta])
+ (fn [meta [_ metadata value]]
+   (assoc meta metadata value)))
 
 (reg-event-db
  ::add-section
- (fn [db _]
-   (let [sections (-> db :active-recipe :sections)
-         sid (next-id sections)]
-     (assoc-in
-      db
-      [:active-recipe :sections sid]
-      {:sid sid :ingredients (sorted-map) :procedures (sorted-map)}))))
+ (path [:active-recipe :sections])
+ (fn [sections _]
+   (let [sid (next-id sections)]
+     (assoc sections sid {:sid sid
+                          :ingredients (sorted-map)
+                          :procedures (sorted-map)}))))
 
 (reg-event-db
  ::remove-section
- (fn [db [_ sid]]
-   (update-in db [:active-recipe :sections] dissoc sid)))
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid]]
+   (dissoc sections sid)))
 
 (reg-event-db
  ::add-procedure
- (fn [db [_ sid]]
-   (let [pid (next-id (get-in db [:active-recipe :sections sid :procedures]))]
-     (assoc-in
-      db
-      [:active-recipe :sections sid :procedures pid]
-      {:pid pid :value nil}))))
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid]]
+   (let [pid (next-id (get-in sections [sid :procedures]))]
+     (assoc-in sections [sid :procedures pid] {:pid pid :value nil}))))
 
 (reg-event-db
  ::edit-procedure
- (fn [db [_ sid pid val]]
-   (assoc-in
-    db
-    [:active-recipe :sections sid :procedures pid :value]
-    val)))
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid pid val]]
+   (assoc-in sections [sid :procedures pid :value] val)))
 
 (reg-event-db
  ::remove-procedure
- (fn [db [_ sid pid]]
-   (update-in db [:active-recipe :sections sid :procedures] dissoc pid)))
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid pid]]
+   (update-in sections [sid :procedures] dissoc pid)))
 
 (reg-event-db
  ::add-ingredient
- (fn [db [_ sid]]
-   (let [iid (next-id (get-in db [:active-recipe :sections sid :ingredients]))]
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid]]
+   (let [iid (next-id (get-in sections [sid :ingredients]))]
      (assoc-in
-      db
-      [:active-recipe :sections sid :ingredients iid]
+      sections
+      [sid :ingredients iid]
       {:iid iid
        :name nil
        :quantity nil
@@ -90,35 +89,31 @@
 
 (reg-event-db
  ::edit-ingredient
- (fn [db [_ sid iid key val]]
-   (assoc-in
-    db
-    [:active-recipe :sections sid :ingredients iid key]
-    val)))
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid iid key val]]
+   (assoc-in sections [sid :ingredients iid key] val)))
 
 (reg-event-db
  ::remove-ingredient
- (fn [db [_ sid iid]]
-   (update-in db [:active-recipe :sections sid :ingredients] dissoc iid)))
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid iid]]
+   (update-in sections [sid :ingredients] dissoc iid)))
 
 (reg-event-db
  ::set-as-scalar
- (fn [db [_ sid iid]]
-   (-> db
-       (update-in
-        [:active-recipe :sections]
-        (fn [sections]
-          (update-vals
-           sections
-           (fn [section]
-             (update
-              section
-              :ingredients
-              (fn [ingredients]
-                (update-vals
-                 ingredients
-                 (fn [ingredient] (assoc ingredient :scalar? false)))))))))
-       (assoc-in [:active-recipe :sections sid :ingredients iid :scalar?] true))))
+ (path [:active-recipe :sections])
+ (fn [sections [_ sid iid]]
+   (-> sections
+       (update-vals
+        (fn [section]
+          (update
+           section
+           :ingredients
+           (fn [ingredients]
+             (update-vals
+              ingredients
+              (fn [ingredient] (assoc ingredient :scalar? false)))))))
+       (assoc-in [sid :ingredients iid :scalar?] true))))
 
 ;; ========== SUBSCRIPTIONS ====================================================
 (reg-sub
