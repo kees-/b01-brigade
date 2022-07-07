@@ -11,7 +11,7 @@ main {
   margin: 2rem;
 }
 
-h1, h2 {
+h1, h2, h3 {
   margin: 1rem auto .25rem 2rem;
 }
 
@@ -40,3 +40,7 @@ table td {
 .struck {
   text-decoration: line-through;
 }
+.left {
+  margin-left: 1rem;
+}
+

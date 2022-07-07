@@ -6,6 +6,7 @@
    [kees.b01.views :as views]
    [kees.b01.config :as config]))
 
+;; ========== SETUP, INIT, MOUNT ===============================================
 (defn dev-setup []
   (when config/debug?
     (println "dev mode")))

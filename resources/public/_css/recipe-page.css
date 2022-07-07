@@ -2,6 +2,15 @@
   max-width: 5rem;
 }
 
+.textbox {
+  font-size: .75rem;
+}
+
+.console {
+  background-color: #1d3030;
+  color: honeydew;
+}
+
 #active-recipe {
   padding: 1rem;
 }
