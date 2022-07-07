@@ -9,7 +9,7 @@
   (-> e .-target .blur))
 
 (def unit-opts
-  ["g" "oz" "lb" "fl oz" "ml" "other" "none"])
+  ["g" "oz" "lb" "fl oz" "ml" "other" "no unit" "none"])
 
 (def scaling-opts
   ["auto" "override" "none"])

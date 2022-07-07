@@ -164,10 +164,12 @@
                          (-> ingredient
                              (assoc
                               :quantity-string
-                              (str (:quantity ingredient)
+                              (str (when-not (= "none" (:unit ingredient))
+                                     (:quantity ingredient))
                                    (case (:unit ingredient)
-                                     :none nil
-                                     :other (:other ingredient)
+                                     "no unit" nil
+                                     "none" nil
+                                     "other" (:other ingredient)
                                      (name (:unit ingredient)))))
                              (assoc
                               :scaling-string
