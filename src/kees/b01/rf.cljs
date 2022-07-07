@@ -205,7 +205,6 @@
 (reg-sub
  ::form->data
  (fn [db _]
-   #_{:clj-kondo/ignore [:redundant-let]}
    (let [data (:active-recipe db)]
      (-> data
          (update
