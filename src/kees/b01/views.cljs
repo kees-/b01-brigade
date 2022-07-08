@@ -33,7 +33,7 @@
 (defn recipe-ingredient
   [sid {:keys [iid]}]
   (let [{:keys [name quantity unit]} (<sub [::rf/ingredient-values sid iid])]
-    [:li
+    [:li.f.fr.fs
      [:input
       {:type "text"
        :placeholder "Name"
@@ -41,7 +41,7 @@
        :on-blur #(>evt [::rf/edit-ingredient sid iid :name (-> % .-target .-value)])
        :on-key-down #(case (.-keyCode %)
                        nil)}]
-     [:input.quantity-input
+     [:input.mw5r
       {:type "text"
        :placeholder "Quantity"
        :default-value quantity
