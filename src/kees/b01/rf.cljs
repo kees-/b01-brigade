@@ -19,6 +19,17 @@
            :source ""}
     :sections (sorted-map)}})
 
+(defn default-ingredient
+  [iid]
+  {:iid iid
+   :name ""
+   :quantity ""
+   :unit "g"
+   :other ""
+   :scaling :auto
+   :custom-scale ""
+   :scalar? false})
+
 ;; ========== ASSISTANTS =======================================================
 ;; Taken from re-frame/todomvc
 (defn next-id
@@ -88,17 +99,7 @@
  (path [:active-recipe :sections])
  (fn [sections [_ sid]]
    (let [iid (next-id (get-in sections [sid :ingredients]))]
-     (assoc-in
-      sections
-      [sid :ingredients iid]
-      {:iid iid
-       :name nil
-       :quantity nil
-       :unit "g"
-       :other ""
-       :scaling :auto
-       :custom-scale ""
-       :scalar? false}))))
+     (assoc-in sections [sid :ingredients iid] (default-ingredient iid)))))
 
 (reg-event-db
  ::edit-ingredient
