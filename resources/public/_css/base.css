@@ -47,3 +47,31 @@ table td {
 #output {
   display: none;
 }
+
+/* ========== FLEX CLASSES ================================================== */
+.f {
+  display: flex
+}
+.fc {
+  flex-direction: column;
+}
+.fr {
+  flex-direction: row;
+}
+.fs {
+  align-items: flex-start;
+}
+.fh {
+  align-items: stretch;
+}
+.fg0 {
+  flex-grow: 0;
+}
+
+/* ========== SIZING CLASSES ================================================ */
+.mw5r {
+  max-width: 5rem;
+}
+.w5r {
+  width: 5rem;
+}
