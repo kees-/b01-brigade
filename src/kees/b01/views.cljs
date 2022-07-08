@@ -30,6 +30,32 @@
        :on-blur #(>evt [::rf/recipe-metadata :servings (-> % .-target .-value)])
        :placeholder "Servings"}]]))
 
+(defn other-unit
+  [sid iid]
+  (let [{:keys [other unit]} (<sub [::rf/ingredient-values sid iid])
+        other? (= unit "other")]
+    (when other?
+      [:input
+       {:type "text"
+        :placeholder "Unit"
+        :default other
+        :on-blur #(>evt [::rf/edit-ingredient sid iid :other (-> % .-target .-value)])
+        :on-key-down #(case (.-keyCode %)
+                        nil)}])))
+
+(defn custom-scale
+  [sid iid]
+  (let [{:keys [scaling custom-scale]} (<sub [::rf/ingredient-values sid iid])
+        override? (= scaling :override)]
+    (when override?
+      [:input
+       {:type "text"
+        :placeholder "Scale"
+        :default custom-scale
+        :on-blur #(>evt [::rf/edit-ingredient sid iid :custom-scale (-> % .-target .-value)])
+        :on-key-down #(case (.-keyCode %)
+                        nil)}])))
+
 (defn recipe-ingredient
   [sid {:keys [iid]}]
   (let [{:keys [name quantity unit]} (<sub [::rf/ingredient-values sid iid])]
@@ -49,21 +75,25 @@
        :on-blur #(>evt [::rf/edit-ingredient sid iid :quantity (-> % .-target .-value)])
        :on-key-down #(case (.-keyCode %)
                        nil)}]
-     [:select
-      {:default-value unit
-       :on-change #(>evt [::rf/edit-ingredient sid iid :unit (-> % .-target .-value)])}
-      (for [unit-opt unit-opts]
-        ^{:key unit-opt} [:option {:value unit-opt} unit-opt])]
+     [:div.f.fc.fh.mw5r
+      [:select.w5r
+       {:default-value unit
+        :on-change #(>evt [::rf/edit-ingredient sid iid :unit (-> % .-target .-value)])}
+       (for [unit-opt unit-opts]
+         ^{:key unit-opt} [:option {:value unit-opt} unit-opt])]
+      [other-unit sid iid]]
      [:input
       {:type "radio"
        :name "is-scalar?"
        :on-change #(>evt [::rf/set-as-scalar sid iid])
        :value (str sid iid)}]
-     [:select
-      {:disabled (<sub [::rf/is-scalar? sid iid])
-       :on-change #(>evt [::rf/edit-ingredient sid iid :scaling (-> % .-target .-value keyword)])}
-      (for [scaling-opt scaling-opts]
-        ^{:key scaling-opt} [:option {:value scaling-opt} scaling-opt])]
+     [:div.f.fc.fh.mw5r
+      [:select.w5r
+       {:disabled (<sub [::rf/is-scalar? sid iid])
+        :on-change #(>evt [::rf/edit-ingredient sid iid :scaling (-> % .-target .-value keyword)])}
+       (for [scaling-opt scaling-opts]
+         ^{:key scaling-opt} [:option {:value scaling-opt} scaling-opt])]
+      [custom-scale sid iid]]
      [:button.remove-ingredient
       {:on-click #(>evt [::rf/remove-ingredient sid iid])}
       "x"]]))

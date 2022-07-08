@@ -95,8 +95,9 @@
        :name nil
        :quantity nil
        :unit "g"
-       :other nil
+       :other ""
        :scaling :auto
+       :custom-scale ""
        :scalar? false}))))
 
 (reg-event-db
@@ -190,6 +191,13 @@
    (-> db :ui :text-output)))
 
 (reg-sub
+ ::ingredient-unit-other?
+ (fn [db [_ sid iid]]
+   (= "other"
+      (get-in db [:active-recipe :sections sid :ingredients iid :unit]))))
+
+
+(reg-sub
  ::ingredient-unit-none?
  (fn [db [_ sid iid]]
    (= "none"
@@ -236,9 +244,9 @@
                                 "100%"
                                 (case (:scaling ingredient)
                                   :auto "x%"
-                                  :override "custom%"
+                                  :override (str (:custom-scale ingredient) "%")
                                   "")))
-                             (dissoc :iid :scalar? :scaling :quantity :unit :other))))))
+                             (dissoc :iid :scalar? :scaling :custom-scale :quantity :unit :other))))))
                    (update
                     :procedures
                     (fn [procedures]
