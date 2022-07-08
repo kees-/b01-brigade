@@ -231,13 +231,15 @@
                          (-> ingredient
                              (assoc
                               :quantity-string
-                              (str (when-not (= "none" (:unit ingredient))
-                                     (:quantity ingredient))
-                                   (case (:unit ingredient)
-                                     "no unit" nil
-                                     "none" nil
-                                     "other" (:other ingredient)
-                                     (name (:unit ingredient)))))
+                              (-> (str (when-not (= "none" (:unit ingredient))
+                                         (:quantity ingredient))
+                                       " "
+                                       (case (:unit ingredient)
+                                         "no unit" nil
+                                         "none" nil
+                                         "other" (:other ingredient)
+                                         (name (:unit ingredient))))
+                                  s/trim))
                              (assoc
                               :scaling-string
                               (if (:scalar? ingredient)
