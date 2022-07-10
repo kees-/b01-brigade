@@ -17,6 +17,8 @@
       [:h4 "Fixes"]
       [:ul
        [:li.struck "Fix lagging text inputs"]
+       [:li "Correct numbering"]
+       [:li "Calculate scaling values"]
        [:li "Add conditional logic to not delete single line item (flashing before re-created)"]]]
      [:li
       [:h4 "Code organization / performance"]
