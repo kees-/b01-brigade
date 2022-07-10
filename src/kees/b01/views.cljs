@@ -1,7 +1,8 @@
 (ns kees.b01.views
   (:require
    [cljs.pprint :refer [pprint]]
-   [kees.b01.rf :as rf :refer [<sub <sub-lazy >evt]]))
+   [kees.b01.rf :as rf :refer [<sub <sub-lazy >evt]]
+   [kees.b01.supplementary :as sup]))
 
 ;; ========== UTILITIES ========================================================
 (defn blur
@@ -219,22 +220,6 @@
      {:on-click #(>evt [::rf/recipe->pdf data])}
      "Download PDF"]))
 
-(defn todo
-  []
-  [:<>
-   [:hr]
-   [:div#todo
-    [:h2 "To do"]
-    [:ul
-     [:li.struck "Split " [:code "none"] " to " [:code "no unit"] " and " [:code "no quantity"]]
-     [:li.struck "Incorporate re-frame " [:code "path"] " logic"]
-     [:li "Implement re-com"]
-     [:li.struck "Fix lagging text inputs"]
-     [:li "Do the async startup flow"]
-     [:li.struck "Test " [:code "case"] " vs " [:code "cond"]]
-     [:li "Add conditional logic to not delete single line item"]
-     [:li "Deal with input list focuses (make an event to focus " [:code "(inc id)"] " e.g)"]]]])
-
 (defn main-panel []
   (let [title "re-frame in July"]
     [:<>
@@ -250,4 +235,4 @@
       [:hr]
       [text-out]
       [console]
-      [todo]]]))
+      [sup/todo]]]))
