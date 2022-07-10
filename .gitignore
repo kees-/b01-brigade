@@ -19,4 +19,4 @@ pom.xml.asc
 .calva
 .shadow-cljs
 node_modules
-resources/public/js/compiled
+resources/public/_js/compiled
