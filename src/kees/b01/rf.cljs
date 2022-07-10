@@ -157,11 +157,6 @@
 
 ;; ========== SUBSCRIPTIONS ====================================================
 (reg-sub
- ::blank
- (fn [_ _]
-   "Does nothing"))
-
-(reg-sub
  ::recipe-metadata
  (fn [db]
    (-> db :active-recipe :meta)))
@@ -196,7 +191,6 @@
  (fn [db [_ sid iid]]
    (= "other"
       (get-in db [:active-recipe :sections sid :ingredients iid :unit]))))
-
 
 (reg-sub
  ::ingredient-unit-none?

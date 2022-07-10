@@ -51,7 +51,7 @@ table td {
 
 /* ========== FLEX CLASSES ================================================== */
 .f {
-  display: flex
+  display: flex;
 }
 .fc {
   flex-direction: column;
