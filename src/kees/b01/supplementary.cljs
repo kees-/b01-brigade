@@ -11,7 +11,8 @@
       [:h4 "Features"]
       [:ul
        [:li "Rearrange sections by grabbing"]
-       [:li "Deal with input list focuses (make an event to focus " [:code "(inc id)"] " e.g)"]]]
+       [:li "Deal with input list focuses (make an event to focus " [:code "(inc id)"] " e.g)"]
+       [:li "Cut off sections at 50"]]]
      [:li
       [:h4 "Fixes"]
       [:ul
