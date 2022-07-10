@@ -1,18 +1,20 @@
+@import "/_asset/OptimaNovaLTProRegular.otf";
+@import "/_asset/OptimaNovaLTProMedium.otf";
+
 hr {
   flex-grow: 1;
-  border: 1px solid black !important;
-  margin: .5rem 0;
+  height: .5px;
+  border: none;
+  background-color: black;
+  margin: 0 0 .3rem;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
 }
-
-pre {
-  white-space: pre-wrap;
+.recipe-body hr:last-child {
+  margin-bottom: .15rem;
 }
 
 div {
-  display: flex;
-}
-
-.f {
   display: flex;
 }
 
@@ -37,7 +39,7 @@ div {
 /* ========== TOP-LEVEL ===================================================== */
 .flex-root * {
   /* border: 1px solid red; */
-  font-family: sans-serif;
+  font-family: "Optima Nova LT Pro", sans-serif;
 }
 #output {
   flex-direction: column;
@@ -49,21 +51,29 @@ div {
 
 /* ========== 2nd LEVEL ===================================================== */
 .recipe-header {
+  margin-top: 1rem;
   justify-content: space-between;
   align-items: flex-end;
+  font-weight: 600;
 }
 .recipe-body {
   font-size: .7rem;
+  line-height: 1.2;
   align-self: center;
 }
 .col-labels {
   align-items: stretch;
   font-size: .8rem;
+  font-weight: 600;
 }
 
 /* ========== 3rd LEVEL ===================================================== */
 .recipe-title {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+.yield {
+  font-size: .75rem;
 }
 .header-ing {
   width: 17.5%;
@@ -77,28 +87,34 @@ div {
 .header-art {
   width: 62%;
 }
+.recipe-source {
+  font-size: .7rem;
+}
 
 /* ========== 4th LEVEL ===================================================== */
 .ingredients {
-  /* border: 1px solid lightgreen; */
   width: 38%;
 }
 .procedures {
-  /* border: 1px solid darkturquoise; */
   width: 62%;
 }
 
 /* ========== 5th LEVEL ===================================================== */
-/* .ingredient {
-  border: 1px solid violet;
+.ingredient {
+  margin-bottom: .2rem;
+}
+.ingredient:last-of-type {
+  margin-bottom: .1rem;
 }
 .procedure {
-  border: 1px solid lawngreen;
-} */
+  margin-bottom: .2rem;
+  line-height: .95rem;
+}
 
 /* ========== 6th LEVEL ===================================================== */
 .ing-name {
   width: 46%;
+  font-weight: 600;
 }
 .quantity {
   width: 29%;

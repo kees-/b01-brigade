@@ -13,14 +13,14 @@
 (defn- ingredient->hiccup
   [{:keys [name quantity-string scaling-string]}]
   [:div.fr.ingredient.w100
-   [:span.f.ing-name name]
-   [:span.f.quantity quantity-string]
-   [:span.f.scaling scaling-string]])
+   [:div.ing-name name]
+   [:div.quantity quantity-string]
+   [:div.scaling scaling-string]])
 
 (defn- procedure->hiccup [text]
   [:div.fr.w100.procedure
-   [:span.step-number "①"]
-   [:span.step-text text]])
+   [:div.step-number "①"]
+   [:div.step-text text]])
 
 (defn- section->hiccup
   [{:keys [ingredients procedures]}]
@@ -39,14 +39,14 @@
   [:<>
    [:div.flex-root.fc
     [:div.recipe-header.fg1
-     [:span.recipe-title (:title meta)]
-     [:article (:servings meta)]]
+     [:div.recipe-title (:title meta)]
+     [:div.yield (:servings meta)]]
     [:div.recipe-body.fc.fg1.w100
      [:div.col-labels.w100
-      [:article.header-ing "INGREDIENT"]
-      [:article.header-qua "QUANTITY"]
-      [:article.header-sca "SCALING"]
-      [:article.header-art "PROCEDURE"]]
+      [:div.header-ing "INGREDIENT"]
+      [:div.header-qua "QUANTITY"]
+      [:div.header-sca "SCALING"]
+      [:div.header-art "PROCEDURE"]]
      [:hr]
      (->> sections
           vals
@@ -54,8 +54,8 @@
           (interpose [:hr])
           (into [:div.fc.sections]))
      [:hr]]
-    [:div#recipe-footer
-     [:article (:source meta)]]]])
+    [:div.recipe-footer
+     [:div.recipe-source (:source meta)]]]])
 
 (defn render-to-output
   [root data]
