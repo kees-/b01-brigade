@@ -1,12 +1,7 @@
-#flex-root * {
-  border: 1px solid red;
-  font-family: sans-serif;
-}
-
 hr {
   flex-grow: 1;
   border: 1px solid black !important;
-  margin: .5rem;
+  margin: .5rem 0;
 }
 
 pre {
@@ -17,46 +12,105 @@ div {
   display: flex;
 }
 
+.f {
+  display: flex;
+}
+
+.fc {
+  display: flex;
+  flex-direction: column;
+}
+
+.fr {
+  display: flex;
+  flex-direction: row;
+}
+
+.fg1 {
+  flex-grow: 1;
+}
+
+.w100 {
+  width: 100%;
+}
+
 /* ========== TOP-LEVEL ===================================================== */
+.flex-root * {
+  /* border: 1px solid red; */
+  font-family: sans-serif;
+}
 #output {
   flex-direction: column;
   align-items: center;
 }
-#flex-root {
-  width: 90%;
-  flex-direction: column;
+.flex-root {
+  width: 100%;
 }
 
 /* ========== 2nd LEVEL ===================================================== */
-#recipe-header {
-  flex-grow: 1;
+.recipe-header {
   justify-content: space-between;
+  align-items: flex-end;
 }
-#recipe-body {
-  width: 100%;
-  flex-grow: 1;
+.recipe-body {
+  font-size: .7rem;
   align-self: center;
-  flex-direction: column;
 }
-#col-labels {
-  width: 100%;
+.col-labels {
   align-items: stretch;
+  font-size: .8rem;
 }
 
 /* ========== 3rd LEVEL ===================================================== */
-#header-ing {
-  flex-grow: 1;
+.recipe-title {
+  font-size: 1.5rem;
 }
-#header-qua {
-  flex-grow: 1;
+.header-ing {
+  width: 17.5%;
 }
-#header-sca {
-  flex-grow: 1;
+.header-qua {
+  width: 11%;
 }
-#header-art {
-  flex-grow: 7;
+.header-sca {
+  width: 9.5%
+}
+.header-art {
+  width: 62%;
 }
 
-#sections {
-  flex-direction: column;
+/* ========== 4th LEVEL ===================================================== */
+.ingredients {
+  /* border: 1px solid lightgreen; */
+  width: 38%;
+}
+.procedures {
+  /* border: 1px solid darkturquoise; */
+  width: 62%;
+}
+
+/* ========== 5th LEVEL ===================================================== */
+/* .ingredient {
+  border: 1px solid violet;
+}
+.procedure {
+  border: 1px solid lawngreen;
+} */
+
+/* ========== 6th LEVEL ===================================================== */
+.ing-name {
+  width: 46%;
+}
+.quantity {
+  width: 29%;
+}
+.scaling {
+  width: 25%;
+}
+
+/* ========== 7th LEVEL ===================================================== */
+.step-number {
+  width: 3.5%;
+}
+.step-text {
+  width: 96.5%;
 }

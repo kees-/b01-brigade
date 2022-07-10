@@ -10,35 +10,52 @@
       .toIsoTimeString))
 
 ;; ========== PRINTING OUTPUT ==================================================
+(defn- ingredient->hiccup
+  [{:keys [name quantity-string scaling-string]}]
+  [:div.fr.ingredient.w100
+   [:span.f.ing-name name]
+   [:span.f.quantity quantity-string]
+   [:span.f.scaling scaling-string]])
+
+(defn- procedure->hiccup [text]
+  [:div.fr.w100.procedure
+   [:span.step-number "①"]
+   [:span.step-text text]])
+
 (defn- section->hiccup
-  [{:keys [sid ingredients procedures]}]
-  ; USELESS PLACEHOLDER
-  [:p (-> procedures vals first)])
+  [{:keys [ingredients procedures]}]
+  [:div.fr.w100
+   (into [:div.ingredients.fc]
+         (for [[iid ingredient] ingredients]
+           ^{:key iid}
+           [ingredient->hiccup ingredient]))
+   (into [:div.procedures.fc]
+         (for [[pid procedure] procedures]
+           ^{:key pid}
+           [procedure->hiccup procedure]))])
 
 (defn- data->html
-  [{:keys [meta sections] :as content}]
+  [{:keys [meta sections]}]
   [:<>
-   [:div#flex-root
-    [:div#recipe-header
-     [:article (:title meta)]
+   [:div.flex-root.fc
+    [:div.recipe-header.fg1
+     [:span.recipe-title (:title meta)]
      [:article (:servings meta)]]
-    [:div#recipe-body
-     [:div#col-labels
-      [:article#header-ing "INGREDIENT"]
-      [:article#header-qua "QUANTITY"]
-      [:article#header-sca "SCALING"]
-      [:article#header-art "PROCEDURE"]]
+    [:div.recipe-body.fc.fg1.w100
+     [:div.col-labels.w100
+      [:article.header-ing "INGREDIENT"]
+      [:article.header-qua "QUANTITY"]
+      [:article.header-sca "SCALING"]
+      [:article.header-art "PROCEDURE"]]
      [:hr]
      (->> sections
           vals
           (map section->hiccup)
-          (into [:div#sections]))
+          (interpose [:hr])
+          (into [:div.fc.sections]))
      [:hr]]
     [:div#recipe-footer
-     [:article (:source meta)]]]
-   [:pre#data-sent
-    {:style {:margin-top "4rem"}}
-    (-> content pprint with-out-str)]])
+     [:article (:source meta)]]]])
 
 (defn render-to-output
   [root data]
