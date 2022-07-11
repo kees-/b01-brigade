@@ -40,7 +40,7 @@
    [:div.flex-root.fc
     [:div.recipe-header.fg1
      [:div.recipe-title (:title meta)]
-     [:div.yield (:servings meta)]]
+     [:div.yield (:yield meta)]]
     [:div.recipe-body.fc.fg1.w100
      [:div.col-labels.w100
       [:div.header-ing "INGREDIENT"]

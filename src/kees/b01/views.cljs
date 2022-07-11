@@ -10,7 +10,7 @@
   (-> e .-target .blur))
 
 (def unit-opts
-  ["g" "oz" "lb" "fl oz" "ml" "c" "other" "no unit" "none"])
+  ["g" "oz" "kg" "lb" "fl oz" "ml" "c" "other" "no unit" "none"])
 
 (def scaling-opts
   ["auto" "override" "none"])
@@ -18,7 +18,7 @@
 ;; ========== DOM ==============================================================
 (defn recipe-head
   []
-  (let [{:keys [title servings]} (<sub [::rf/recipe-metadata])]
+  (let [{:keys [title yield]} (<sub [::rf/recipe-metadata])]
     [:div#recipe-head.fit
      [:input
       {:type "text"
@@ -27,15 +27,14 @@
        :placeholder "Recipe name"}]
      [:input
       {:type "text"
-       :default-value servings
-       :on-blur #(>evt [::rf/recipe-metadata :servings (-> % .-target .-value)])
-       :placeholder "Servings"}]]))
+       :default-value yield
+       :on-blur #(>evt [::rf/recipe-metadata :yield (-> % .-target .-value)])
+       :placeholder "Yield"}]]))
 
 (defn other-unit
   [sid iid]
-  (let [{:keys [other unit]} (<sub [::rf/ingredient-values sid iid])
-        other? (= unit "other")]
-    (when other?
+  (let [{:keys [other unit]} (<sub [::rf/ingredient-values sid iid])]
+    (when (= unit "other")
       [:input
        {:type "text"
         :placeholder "Unit"

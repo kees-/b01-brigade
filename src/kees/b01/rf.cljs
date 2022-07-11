@@ -15,7 +15,7 @@
     :console (vector)}
    :active-recipe
    {:meta {:title ""
-           :servings ""
+           :yield ""
            :source ""}
     :sections (sorted-map)}})
 
@@ -185,12 +185,6 @@
  ::text-output
  (fn [db _]
    (-> db :ui :text-output)))
-
-(reg-sub
- ::ingredient-unit-other?
- (fn [db [_ sid iid]]
-   (= "other"
-      (get-in db [:active-recipe :sections sid :ingredients iid :unit]))))
 
 (reg-sub
  ::ingredient-unit-none?
