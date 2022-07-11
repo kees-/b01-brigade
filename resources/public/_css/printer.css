@@ -1,5 +1,5 @@
-@import "/_asset/OptimaNovaLTProRegular.otf";
-@import "/_asset/OptimaNovaLTProMedium.otf";
+@import "/_asset/type/OptimaNovaLTProRegular.otf";
+@import "/_asset/type/OptimaNovaLTProMedium.otf";
 
 hr {
   flex-grow: 1;

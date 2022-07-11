@@ -14,9 +14,10 @@ pom.xml.asc
 .cpcache/
 
 .DS_Store
-.clj-kondo
-.lsp
-.calva
-.shadow-cljs
-node_modules
-resources/public/_js/compiled
+.clj-kondo/
+.lsp/
+.calva/
+.shadow-cljs/
+/node_modules/
+/resources/public/_js/compiled
+/resources/public/_asset/type
