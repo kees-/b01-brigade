@@ -199,6 +199,11 @@
         (s/join \newline))))
 
 ;; ========== DATA OUTPUT ======================================================
+#_(reg-sub
+ ::form->data-new
+ (fn [{:keys [active-recipe]} _]
+   (output/state->data active-recipe)))
+
 (reg-sub
  ::form->data
  (fn [db _]
